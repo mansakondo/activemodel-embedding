@@ -1,5 +1,5 @@
-# Activemodel::Embedding
-Short description and motivation.
+# ActiveModel::Embedding
+An ActiveModel extension to define embedded associations
 
 ## Usage
 How to use my plugin.
@@ -8,19 +8,13 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activemodel-embedding'
+gem 'activemodel-embedding', git: "https://github.com/mansakondo/activemodel-embedding"
 ```
 
 And then execute:
 ```bash
 $ bundle
 ```
-
-Or install it yourself as:
-```bash
-$ gem install activemodel-embedding
-```
-
 ## Contributing
 Contribution directions go here.
 
