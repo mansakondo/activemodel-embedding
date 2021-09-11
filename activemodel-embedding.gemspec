@@ -1,4 +1,4 @@
-require_relative "lib/activemodel/embedding/version"
+require_relative "lib/active_model/embedding/version"
 
 Gem::Specification.new do |spec|
   spec.name        = "activemodel-embedding"
