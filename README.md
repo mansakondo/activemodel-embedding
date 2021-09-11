@@ -1,5 +1,5 @@
 # ActiveModel::Embedding
-An ActiveModel extension to define embedded associations
+An ActiveModel extension to model your semi-structured data using embedded associations
 
 ## Usage
 How to use my plugin.
