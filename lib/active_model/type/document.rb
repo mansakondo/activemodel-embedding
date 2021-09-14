@@ -2,8 +2,7 @@
 
 module ActiveModel
   module Type
-    class Value
-    end
+    class Value; end
 
     class Document < Value
       attr_reader :document_class, :cast_type
@@ -95,5 +94,7 @@ module ActiveModel
         end
       end
     end
+
+    register :document, Document
   end
 end
