@@ -384,35 +384,35 @@ end
 Et voilà! There you have it!
 
 ## Concepts
-### <a name="document"></a>Document
+### Document
 A JSON object which acts like a database record. Usually part of a
 [collection](#collection).
 
-### <a name="collection"></a>Collection:
+### Collection:
 A JSON column which acts like a database table. Stores collections of
 [documents](#document).
 
-### <a name="embedded-associations"></a>Embedded Associations
+### Embedded Associations
 Models structural hierarchies in [semi-structured data](#semi-structured-data), by "embedding"
 the content of children directly in the parent, instead of using references like foreign keys. See
 [Embedded Data
 Models](https://docs.mongodb.com/manual/core/data-model-design/#embedded-data-models) from
 MongoDB's docs.
 
-### <a name="semi-structured-data"></a>Semi-structured data
+### Semi-structured data
 Data that don't fit in the [relational model](https://www.digitalocean.com/community/tutorials/what-is-the-relational-model).
 > Semi-structured data is a form of structured data that does not obey the tabular structure of data models associated with relational databases or other forms of data tables, but nonetheless contains tags or other markers to separate semantic elements and enforce hierarchies of records and fields within the data. Therefore, it is also known as self-describing structure. - Wikipedia
 
 
 ### Components
-### `ActiveModel::Type::Document`
-A polymorphic cast type (registered as `:document`). Maps JSON documents/objects to ActiveModel
-objects. Provides support for defining collections. Designed to work with classes that includes
-`ActiveModel::Document`.
-
 ### `ActiveModel::Embedding`
 API for defining [embedded associations](#embedded-associations). Uses the Attributes API with
 the `:document` type.
+
+### `ActiveModel::Type::Document`
+A polymorphic cast type (registered as `:document`). Maps JSON [documents](#document)/objects to ActiveModel
+objects. Provides support for defining [collections](#collection). Designed to work with classes that includes
+`ActiveModel::Document`.
 
 ### `ActiveModel::Document`
 A module which includes everything needed to work with the `:document` type. Provides an `id`
