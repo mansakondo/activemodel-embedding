@@ -87,8 +87,8 @@ MongoDB](http://www.sarahmei.com/blog/2013/11/11/why-you-should-never-use-mongod
 insights on the use cases of this feature.
 
 ## Use case: Dealing with bibliographic data
-Let's say that we are building an app to help libraries manage the data in their catalog. When
-we're browsing through a catalog, we often see item information formatted like this:
+Let's say that we are building an app to help libraries build and manage an online catalog.
+When we're browsing through a catalog, we often see item information formatted like this:
 ```
 Author:        Shakespeare, William, 1564-1616.
 Title:         Hamlet / William Shakespeare.
@@ -269,7 +269,7 @@ class DocumentType < ::ActiveModel::Type::Value
   end
 end
 ```
-Let's register our type as we gonna use it in more than one place:
+Let's register our type as we gonna use it multiple times:
 ```ruby
 # config/initializers/type.rb
 ActiveModel::Type.register(:document, DocumentType)
@@ -282,9 +282,9 @@ class MARC::Record < ApplicationRecord
     class_name: "::MARC::Record::Field"
     collection: true
 
+  # Hash-like reader method
   def [](tag)
-    fields = fields.find { |field| field.tag == tag }
-    fields.value if field.control_field?
+    fields.find { |field| field.tag == tag }
   end
 end
 ```
@@ -301,6 +301,7 @@ class MARC::Record::Field
 
   attr_reader :value
 
+  # Some domain logic
   def value=(value)
     @value = value if control_field?
   end
@@ -309,9 +310,10 @@ class MARC::Record::Field
     tag ~= /00\d/
   end
 
+  # Yet another Hash-like reader method
   def [](code)
     subfield = subfields.find { |subfield| subfield.code == code }
-    subfield.value
+    subfield.value if subfield
   end
 
 end
