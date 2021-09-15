@@ -406,7 +406,7 @@ A JSON array mapped to an `ActiveModel::Collection` (or any class that includes
 `ActiveModel::Collecting`). Stores collections of
 [documents](#document).
 
-### Embedded Associations
+### Embedded associations
 Models structural hierarchies in [semi-structured data](#semi-structured-data), by "embedding"
 the content of children directly in the parent, instead of using references like foreign keys. See
 [Embedded Data
