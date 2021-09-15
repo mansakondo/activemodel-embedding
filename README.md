@@ -25,6 +25,8 @@ class Book::Part
 end
 
 class Book::Part::Chapter
+  include ActiveModel::Document
+
   attribute :title, :string
 
   embeds_many :sections
@@ -224,7 +226,7 @@ we could interact with our JSON data the same way we do with ActiveRecord associ
 ActiveModel and the [AttributesAPI](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute)!
 
 First, we have to define a custom type which...
-- Maps ActiveModel-compliant objects to JSON objects
+- Maps JSON objects to ActiveModel-compliant objects
 - Handles collections
 
 To do that, we'll add the following options to our type:
@@ -344,7 +346,7 @@ If we want to go further, we can...
     `"Field"` in our example.
 
 And that's what this extension does. (Nothing fancy, in fact the code is quite simple. So don't
-be afraid to dive into if you want to know how it was implemented !)
+be afraid to dive into it if you want to know how it was implemented !)
 
 Here's how the code would look like with the extension:
 ```ruby
@@ -368,7 +370,7 @@ class MARC::Record::Field
 end
 ```
 
-We can then use our embedded associations in the views just like nested attributes:
+We can then use our embedded associations in the views as nested attributes:
 ```erb
 # app/views/marc/records/_form.html.erb
 <%= @form_with @record do |record_form| %>
@@ -440,7 +442,7 @@ Default collection class. Includes `ActiveModel::Collecting`.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activemodel-embedding', git: "https://github.com/mansakondo/activemodel-embedding"
+gem 'activemodel-embedding', github: "mansakondo/activemodel-embedding"
 ```
 
 And then execute:
