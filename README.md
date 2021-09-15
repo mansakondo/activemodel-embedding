@@ -2,6 +2,50 @@
 An ActiveModel extension to model your [semi-structured data](#semi-structured-data) using
 [embedded associations](#embedded-associations).
 
+- [Introduction](#introduction)
+- [Usage](#usage)
+- [Warning](#warning)
+- [Use Case: Dealing with bibliographic data](#use-case%3A-dealing-with-bibliographic-data)
+- [Concepts](#concepts)
+- [Components](#components)
+- [Installation](#installation)
+- [License](#license)
+
+## Introduction
+Relational databases are very powerful. Their power comes from their ability to...
+- Preserve data integrity with a predefined schema
+- Make complex relationships through joins
+
+However, sometimes we can stumble accross data that don't fit in the relational model. We call
+this kind of data: [**semi-structured data**](#semi-structured-data). When
+this happens, the things that makes relational databases powerful are the things that gets in our way,
+and complicate our model instead of simplifying it.
+
+That's why [document databases](https://en.wikipedia.org/wiki/Document-oriented_database)
+exist, to model and store semi-structured data. However, if we choose to use a document
+database, we'll loose all the power of using a relational database.
+
+But since relational databases like Postgres and MySQL now has good JSON support, most of us
+won't need to use a document database like MongoDB, as it would be overkill. Most of the time,
+we only need to [denormalize](https://www.geeksforgeeks.org/denormalization-in-databases/) some
+parts of our model. So it makes more sense to use simple JSON columns for those, instead of
+going all-in, and dump your beloved relational database for MongoDB.
+
+Currently in Rails, we have several features that we can use to interact with JSON:
+- [JSON serialization](https://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html)
+- [JSON column](https://guides.rubyonrails.org/active_record_postgresql.html#json-and-jsonb).
+- [Attributes API](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute)
+
+By combining these features, we have full control over how our JSON data is stored and
+converted.
+
+That's what this extension does, in order to provide a way to model semi-structured data in
+Rails applications (in a more "structured" way). This is done by...
+- Mapping JSON objects to ActiveModel-compliant objects
+- Mappping JSON arrays to custom Ruby collections
+- Adding support for nested attributes
+- Emulating persistence to facilitate updates
+
 ## Usage
 Let's say that we need to store books in our database. We might want to "embed" data such as
 parts, chapters and sections without creating additional tables. By doing so, we can retrieve
@@ -451,8 +495,6 @@ And then execute:
 ```bash
 $ bundle
 ```
-## Contributing
-Contribution directions go here.
 
 ## License
 The gem is available as open source under the terms of the [MIT
