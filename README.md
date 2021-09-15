@@ -489,7 +489,7 @@ Default collection class. Includes `ActiveModel::Collecting`.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activemodel-embedding', github: "mansakondo/activemodel-embedding"
+gem 'activemodel-embedding', github: 'mansakondo/activemodel-embedding'
 ```
 
 And then execute:
