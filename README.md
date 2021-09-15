@@ -16,10 +16,11 @@ Relational databases are very powerful. Their power comes from their ability to.
 - Preserve data integrity with a predefined schema
 - Make complex relationships through joins
 
-However, sometimes we can stumble accross data that don't fit in the relational model. We call
-this kind of data: [**semi-structured data**](#semi-structured-data). When
-this happens, the things that makes relational databases powerful are the things that gets in our way,
-and complicate our model instead of simplifying it.
+However, sometimes we can stumble accross data that don't fit in the [relational
+model](https://www.digitalocean.com/community/tutorials/what-is-the-relational-model). We call
+this kind of data: [semi-structured data](#semi-structured-data). When this happens, the
+things that makes relational databases powerful are the things that gets in our way, and
+complicate our model instead of simplifying it.
 
 That's why [document databases](https://en.wikipedia.org/wiki/Document-oriented_database)
 exist, to model and store semi-structured data. However, if we choose to use a document
