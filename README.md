@@ -80,7 +80,7 @@ Options:
 - `:cast_type`: Same as above
 
 ## Warning
-[Embedded associations](#embedded-associations) should only be used this if you're sure that the data you want to embed is
+[Embedded associations](#embedded-associations) should only be used if you're sure that the data you want to embed is
 **encapsulated**. Which means, that the data is only meant to be accessed through the parent, and not from
 the outside. Thus, you should only use it if performing joins isn't a viable option. See [Why You Should Never Use
 MongoDB](http://www.sarahmei.com/blog/2013/11/11/why-you-should-never-use-mongodb/) for more
