@@ -36,28 +36,53 @@ class Book::Part::Chapter::Section
 end
 ```
 
-And display it like this:
+And display it like this (with nested attributes support out-of-the-box):
 ```erb
 # app/views/books/_form.html.erb
 <%= @form_with @book do |book_form| %>
   <%= book_form.fields_for :parts do |part_fields| %>
+
     <%= part_fields.label :title %>
     <%= part_fields.text_area :content %>
+
     <%= part_fields.fields_for :chapters do |chapter_fields| %>
       <%= chapter_fields.label :title %>
       <%= chapter_fields.text_area :content %>
+
       <%= chapter_fields.fields_for :chapters do |chapter_fields| %>
         <%= section_fields.label :title %>
         <%= section_fields.text_area :content %>
       <% end %>
     <% end %>
+
   <% end %>
 <% end %>
 ```
 
-**Beware** though, as you should only use this if you're sure that the data you want to embed is
-**encapsulated** - that the data is only meant to be accessed through the parent. Thus, this
-should only be used if performing joins isn't a viable option.
+### Associations
+#### embeds_many
+Maps a JSON array to a [collection](#collection).
+
+Options:
+- `:class_name`: Specify the class of the [documents](#document) in the collection. Inferred by default.
+- `:collection`: Specify a custom collection class which includes
+    [`ActiveModel::Collecting`](#activemodel%3A%3Acollecting)
+- (`ActiveModel::Collection` by default)
+- `:cast_type`: Specify a custom type that should be used to cast the documents in the
+collection. the `:class_name` is ignored if this option is present.
+#### embed_one
+Maps a JSON object to a [document](#document).
+
+Options:
+- `:class_name`: Same as above
+- `:cast_type`: Same as above
+
+## Warning
+[Embedded associations](#embedded-associations) should only use this if you're sure that the data you want to embed is
+**encapsulated**. Which means, that the data is only meant to be accessed through the parent, and not from
+the outside. Thus, this should only be used if performing joins isn't a viable option. See [Why You Should Never Use
+MongoDB](http://www.sarahmei.com/blog/2013/11/11/why-you-should-never-use-mongodb/) for more
+insights on the use cases of this feature.
 
 ## Use case: Dealing with bibliographic data
 Let's say that we are building an app to help libraries manage the data in their catalog. When
@@ -198,86 +223,62 @@ It works, but we cannot attach logic to our JSON data without polluting our mode
 we could interact with our JSON data the same way we do with ActiveRecord associations ? Enters
 ActiveModel and the [AttributesAPI](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute)!
 
-First, we have to define our custom types:
+First, we have to define a custom type which...
+- Maps ActiveModel-compliant objects to JSON objects
+- Handles collections
+
+To do that, we'll add the following options to our type:
+- `:class_name`: The class name of an ActiveModel-compliant object.
+- `:collection`: Specify if the attribute is a collection. Default to `false`.
+
 ```ruby
-class MARC::Record
-  class FieldType < ::ActiveModel::Type::Value
-    attr_reader :collection
+class DocumentType < ::ActiveModel::Type::Value
+  attr_reader :document_class, :collection
 
-    def initialize(collection: false)
-      @collection = collection
-    end
+  def initialize(class_name:, collection: false)
+    @document_class = class_name.constantize
+    @collection     = collection
+  end
 
-    def cast(value)
-      if collection
-        value.map { |attributes| process attributes }
-      else
-        process value
-      end
+  def cast(value)
+    if collection
+      value.map { |attributes| process attributes }
+    else
+      process value
     end
+  end
 
-    def process(value)
-      # Process the value
-    end
+  def process(value)
+    document_class.new(value)
+  end
 
-    def serialize(value)
-      value.to_json
-    end
+  def serialize(value)
+    value.to_json
+  end
 
-    def deserialize(json)
-      value = ActiveSupport::JSON.decode(json)
-      cast value
-    end
+  def deserialize(json)
+    value = ActiveSupport::JSON.decode(json)
+    cast value
+  end
 
-    # Track changes
-    def changed_in_place?(old_value, new_value)
-      deserialize(old_value) != new_value
-    end
+  # Track changes
+  def changed_in_place?(old_value, new_value)
+    deserialize(old_value) != new_value
   end
 end
 ```
+Let's register our type as we gonna use it in more than one place:
 ```ruby
-class MARC::Record::Field
-  class SubfieldType < ::ActiveModel::Type::Value
-    attr_reader :collection
-
-    def initialize(collection: false)
-      @collection = collection
-    end
-
-    def cast(value)
-      if collection
-        value.map { |attributes| process attributes }
-      else
-        process value
-      end
-    end
-
-    def process(value)
-      # Process the value
-    end
-
-    def serialize(value)
-      value.to_json
-    end
-
-    def deserialize(json)
-      value = ActiveSupport::JSON.decode(json)
-      cast value
-    end
-
-    # Track changes
-    def changed_in_place?(old_value, new_value)
-      deserialize(old_value) != new_value
-    end
-  end
-end
+# config/initializers/type.rb
+ActiveModel::Type.register(:document, DocumentType)
 ```
 
-Now we can use them in our models:
+Now we can use it in our models:
 ```ruby
 class MARC::Record < ApplicationRecord
-  attribute :fields, FieldType.new(collection: true)
+  attribute :fields, :document
+    class_name: "::MARC::Record::Field"
+    collection: true
 
   def [](tag)
     fields = fields.find { |field| field.tag == tag }
@@ -292,7 +293,9 @@ class MARC::Record::Field
   attribute :tag, :string
   attribute :indicator1, :integer
   attribute :indicator2, :integer
-  attribute :subfields, SubfieldType.new(collection: true)
+  attribute :subfields, :document
+    class_name: "::MARC::Record::Field::Subfield"
+    collection: true
 
   attr_reader :value
 
@@ -329,67 +332,74 @@ end
 => "Hamlet"
 ```
 
-Now we have more flexibility. But wait! The custom types we've defined are identical! Let's improve our
-code to DRY this up:
-```ruby
-class DocumentType < ::ActiveModel::Type::Value
-  attr_reader :document_class, :collection
+Et voilà ! Home-made associations !
 
-  def initialize(class_name:, collection: false)
-    @document_class = class_name.constantize
-    @collection     = collection
-  end
+If we want to go further, we can...
+- Create our custom collection class to provide functionalities like ActiveRecord
+    collection proxies.
+- Add support for nested attributes.
+- Emulate persistence to update specific objects.
+- Provide a way to resolve constants, so that we can use the relative name of a constant
+    instead of it's full name. For example, `"::MARC::Record::Field"` could be referred as
+    `"Field"` in our example.
 
-  def cast(value)
-    if collection
-      value.map { |attributes| process attributes }
-    else
-      process value
-    end
-  end
+And that's what this extension does. (Nothing fancy, in fact the code is quite simple. So don't
+be afraid to dive into if you want to know how it was implemented !)
 
-  def process(value)
-    document_class.new(value)
-  end
-
-  # ...
-end
-```
-
-Let's register our type as we gonna use it in more than one place:
-```ruby
-# config/initializers/type.rb
-ActiveModel::Type.register(:document, DocumentType)
-```
-
-Let's update our models to use this type:
+Here's how the code would look like with the extension:
 ```ruby
 class MARC::Record < ApplicationRecord
-  attribute :fields, :document,
-    class_name: "::MARC::Record::Field",
-    collection: true
+  include ActiveModel::Embedding
+
+  embeds_many :fields
+
   # ...
 end
 ```
 ```ruby
 class MARC::Record::Field
+  include ActiveModel::Document
+
   # ...
-  attribute :subfields, :document
-    class_name: "::MARC::Record::Field::Subfield",
-    collection: true
+
+  embeds_many :subfields
+
   # ...
 end
 ```
 
-Et voilà! There you have it!
+We can then use our embedded associations in the views just like nested attributes:
+```erb
+# app/views/marc/records/_form.html.erb
+<%= @form_with @record do |record_form| %>
+  <%= record_form.fields_for :fields do |field_fields| %>
+
+    <%= field_fields.label :tag %>
+
+    <% if field.control_field? %>
+      <%= field_fields.text_field :value %>
+    <% else %>
+      <%= field_fields.number_field :indicator1
+      <%= field_fields.number_field :indicator2
+
+      <%= field_fields.fields_for :subfields do |subfield_fields| %>
+        <%= subfield_fields.label :code %>
+        <%= subfield_fields.text_field :value %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+<% end %>
+```
 
 ## Concepts
 ### Document
-A JSON object which acts like a database record. Usually part of a
+A JSON object mapped to a PORO which includes `ActiveModel::Document`. Usually part of a
 [collection](#collection).
 
-### Collection:
-A JSON column which acts like a database table. Stores collections of
+### Collection
+A JSON array mapped to an `ActiveModel::Collection` (or any class that includes
+`ActiveModel::Collecting`). Stores collections of
 [documents](#document).
 
 ### Embedded Associations
@@ -410,13 +420,14 @@ API for defining [embedded associations](#embedded-associations). Uses the Attri
 the `:document` type.
 
 ### `ActiveModel::Type::Document`
-A polymorphic cast type (registered as `:document`). Maps JSON [documents](#document)/objects to ActiveModel
-objects. Provides support for defining [collections](#collection). Designed to work with classes that includes
-`ActiveModel::Document`.
+A polymorphic cast type (registered as `:document`). Maps JSON objects to POROs that includes
+`ActiveModel::Document`. Provides support for defining [collections](#collection).
 
 ### `ActiveModel::Document`
-A module which includes everything needed to work with the `:document` type. Provides an `id`
-attribute and implements methods like `#persisted?` and `#save` to emulate persistence.
+A module which includes everything needed to work with the `:document` type
+(`ActiveModel::Model`, `ActiveModel::Attributes`, `ActiveModel::Serializers::JSON`,
+`ActiveModel::Embedding`). Provides an `id` attribute and implements methods like `#persisted?`
+and `#save` to emulate persistence.
 
 ### `ActiveModel::Collecting`
 A mixin which provides capabailities similar to ActiveRecord collection proxies. Provides
