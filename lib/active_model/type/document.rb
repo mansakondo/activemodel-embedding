@@ -96,5 +96,7 @@ module ActiveModel
     end
 
     register :document, Document
+    ::ActiveRecord::Type.register :document, Document
   end
 end
+
