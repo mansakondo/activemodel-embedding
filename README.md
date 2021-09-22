@@ -338,8 +338,8 @@ ActiveModel::Type.register(:document, DocumentType)
 Now we can use it in our models:
 ```ruby
 class MARC::Record < ApplicationRecord
-  attribute :fields, :document
-    class_name: "::MARC::Record::Field",
+  attribute :fields, :document,
+    class_name: "MARC::Record::Field",
     collection: true
 
   # Hash-like reader method
@@ -355,8 +355,8 @@ class MARC::Record::Field
   attribute :tag, :string
   attribute :indicator1, :integer
   attribute :indicator2, :integer
-  attribute :subfields, :document
-    class_name: "::MARC::Record::Field::Subfield",
+  attribute :subfields, :document,
+    class_name: "MARC::Record::Field::Subfield",
     collection: true
 
   attr_reader :value
@@ -406,7 +406,7 @@ If we want to go further, we can...
 - Add support for nested attributes.
 - Emulate persistence to update specific objects.
 - Provide a way to resolve constants, so that we can use the relative name of a constant
-    instead of it's full name. For example, `"::MARC::Record::Field"` could be referred as
+    instead of it's full name. For example, `"MARC::Record::Field"` could be referred as
     `"Field"` in our example.
 
 And that's what this extension does. (Nothing fancy, in fact the code is quite simple. So don't
