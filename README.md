@@ -113,7 +113,7 @@ Options:
     [`ActiveModel::Collecting`](#activemodel%3A%3Acollecting) (`ActiveModel::Collection` by
     default).
 - `:cast_type`: Specify a custom type that should be used to cast the documents in the
-collection. the `:class_name` is ignored if this option is present.
+collection. (the `:class_name` is ignored if this option is present.)
 #### embed_one
 Maps a JSON object to a [document](#document).
 
