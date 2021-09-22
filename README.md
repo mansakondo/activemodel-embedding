@@ -333,6 +333,7 @@ Let's register our type as we gonna use it multiple times:
 ```ruby
 # config/initializers/type.rb
 ActiveModel::Type.register(:document, DocumentType)
+ActiveRecord::Type.register(:document, DocumentType)
 ```
 
 Now we can use it in our models:
@@ -344,22 +345,25 @@ class MARC::Record < ApplicationRecord
 
   # Hash-like reader method
   def [](tag)
-    fields.find { |field| field.tag == tag }
+    occurences = fields.select { |field| field.tag == tag }
+    occurences.first unless occurences.count > 1
   end
 end
 ```
 ```ruby
 class MARC::Record::Field
   include ActiveModel::Model
+  include ActiveModel::Attributes
+  include ActiveModel::Serializers::JSON
 
   attribute :tag, :string
-  attribute :indicator1, :integer
-  attribute :indicator2, :integer
+  attribute :indicator1, :string
+  attribute :indicator2, :string
   attribute :subfields, :document,
     class_name: "MARC::Record::Field::Subfield",
     collection: true
 
-  attr_reader :value
+  attribute :value, :string
 
   # Some domain logic
   def value=(value)
@@ -367,18 +371,23 @@ class MARC::Record::Field
   end
 
   def control_field?
-    tag ~= /00\d/
+    /00\d/ === tag
   end
 
   # Yet another Hash-like reader method
   def [](code)
-    subfields.find { |subfield| subfield.code == code }
+    occurences = subfields.find { |subfield| subfield.code == code }
+    occurences.first unless occurences.count > 1
   end
 
 end
 ```
 ```ruby
 class MARC::Record::Field::Subfield
+  include ActiveModel::Model
+  include ActiveModel::Attributes
+  include ActiveModel::Serializers::JSON
+
   attribute :code, :string
   attribute :value, :string
 end
@@ -388,13 +397,13 @@ end
 > record.fields.first.class
 => MARC::Record::Field
 
-> record.fields.first.subfields.first.class
-=> MARC::Record::Field::Subfield
-
 > record.fields.first.control_field?
 => true
 
-> record.fields["245"]["a"].value
+> record.fields.first.subfields.first.class
+=> MARC::Record::Field::Subfield
+
+> record["245"]["a"].value
 => "Hamlet"
 ```
 
