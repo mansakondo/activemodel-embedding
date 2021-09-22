@@ -4,8 +4,8 @@ An ActiveModel extension to model your [semi-structured data](#semi-structured-d
 
 - [Introduction](#introduction)
 - [Usage](#usage)
-- [Use Case: Dealing with bibliographic data](#use-case%3A-dealing-with-bibliographic-data)
 - [Warning](#warning)
+- [Use Case: Dealing with bibliographic data](#use-case%3A-dealing-with-bibliographic-data)
 - [Concepts](#concepts)
 - [Components](#components)
 - [Installation](#installation)
@@ -120,6 +120,16 @@ Maps a JSON object to a [document](#document).
 Options:
 - `:class_name`: Same as above.
 - `:cast_type`: Same as above.
+
+## Warning
+[Embedded associations](#embedded-associations) should only be used if you're sure that the data you want to embed is
+**encapsulated**. Which means, that embedded associations should only be accessed through the
+parent, and not from the outside. Thus, this should only used if performing joins isn't a
+viable option.
+
+Read the section below (and [this
+article](http://www.sarahmei.com/blog/2013/11/11/why-you-should-never-use-mongodb/)) for more
+insights on the use cases of this feature.
 
 ## Use case: Dealing with bibliographic data
 Let's say that we are building an app to help libraries build and manage an online catalog.
@@ -437,11 +447,6 @@ We can then use our embedded associations in the views as nested attributes:
 <% end %>
 ```
 
-## Warning
-[Embedded associations](#embedded-associations) should only be used if you're sure that the data you want to embed is
-**encapsulated**. Which means, that the data is only meant to be accessed through the parent, and not from
-the outside. Thus, you should only use them if performing joins isn't a viable option. Read [this article](http://www.sarahmei.com/blog/2013/11/11/why-you-should-never-use-mongodb/) for more
-insights on the use cases of this feature.
 
 ## Concepts
 ### Document
