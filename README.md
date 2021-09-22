@@ -124,7 +124,7 @@ Options:
 ## Warning
 [Embedded associations](#embedded-associations) should only be used if you're sure that the data you want to embed is
 **encapsulated**. Which means, that embedded associations should only be accessed through the
-parent, and not from the outside. Thus, this should only used if performing joins isn't a
+parent, and not from the outside. Thus, this should only be used if performing joins isn't a
 viable option.
 
 Read the section below (and [this
