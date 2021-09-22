@@ -13,10 +13,10 @@ An ActiveModel extension to model your [semi-structured data](#semi-structured-d
 
 ## Introduction
 Relational databases are very powerful. Their power comes from their ability to...
-- Preserve data integrity with a predefined schema
-- Make complex relationships through joins
+- Preserve data integrity with a predefined schema.
+- Make complex relationships through joins.
 
-However, sometimes we can stumble accross data that don't fit in the [relational
+But sometimes, we can stumble accross data that don't fit in the [relational
 model](https://www.digitalocean.com/community/tutorials/what-is-the-relational-model). We call
 this kind of data: [semi-structured data](#semi-structured-data). When this happens, the
 things that makes relational databases powerful are the things that gets in our way, and
@@ -26,11 +26,12 @@ That's why [document databases](https://en.wikipedia.org/wiki/Document-oriented_
 exist, to model and store semi-structured data. However, if we choose to use a document
 database, we'll loose all the power of using a relational database.
 
-But since relational databases like Postgres and MySQL now has good JSON support, most of us
-won't need to use a document database like MongoDB, as it would be overkill. Most of the time,
-we only need to [denormalize](https://www.geeksforgeeks.org/denormalization-in-databases/) some
-parts of our model. So it makes more sense to use simple JSON columns for those, instead of
-going all-in, and dump your beloved relational database for MongoDB.
+Luckily for us, relational databases like Postgres and MySQL now has good JSON support. So most
+of us won't need to use a document database like MongoDB, as it would be overkill. Most of the
+time, we only need to
+[denormalize](https://www.geeksforgeeks.org/denormalization-in-databases/) some parts of our
+model. So it makes more sense to use simple JSON columns for those, instead of going all-in,
+and dump your beloved relational database for MongoDB.
 
 Currently in Rails, we have several features that we can use to interact with JSON:
 - [JSON serialization](https://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html)
@@ -109,16 +110,16 @@ Maps a JSON array to a [collection](#collection).
 Options:
 - `:class_name`: Specify the class of the [documents](#document) in the collection. Inferred by default.
 - `:collection`: Specify a custom collection class which includes
-    [`ActiveModel::Collecting`](#activemodel%3A%3Acollecting)
-- (`ActiveModel::Collection` by default)
+    [`ActiveModel::Collecting`](#activemodel%3A%3Acollecting) (`ActiveModel::Collection` by
+    default).
 - `:cast_type`: Specify a custom type that should be used to cast the documents in the
 collection. the `:class_name` is ignored if this option is present.
 #### embed_one
 Maps a JSON object to a [document](#document).
 
 Options:
-- `:class_name`: Same as above
-- `:cast_type`: Same as above
+- `:class_name`: Same as above.
+- `:cast_type`: Same as above.
 
 ## Use case: Dealing with bibliographic data
 Let's say that we are building an app to help libraries build and manage an online catalog.
@@ -175,24 +176,24 @@ For convinience, developpers usually represent MARC data in JSON:
     { "tag": "003", "value": "OCoLC" },
     { "tag": "005", "value": "19971028235910.0" },
     { "tag": "008", "value": "940909t19941994ilua 000 0 eng " },
-    { "tag": "010", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "92060871" }] } },
-    { "tag": "020", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "0844257443" }] } },
-    { "tag": "040", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "DLC" }, { "code": "c", "value": "DLC" }, { "code": "d", "value": "BKL" }, { "code": "d", "value": "UtOrBLW" } ] } },
-    { "tag": "049", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "BKLA" }] } },
-    { "tag": "099", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "822.33" }, { "code": "a", "value": "S52" }, { "code": "a", "value": "S7" } ] } },
-    { "tag": "100", { "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "Shakespeare, William," }, { "code": "d", "value": "1564-1616." } ] } },
-    { "tag": "245", { "indicator1": "1", "indicator2": "0", "subfields": [{ "code": "a", "value": "Hamlet" }, { "code": "c", "value": "William Shakespeare." } ] } },
-    { "tag": "264", { "indicator1": " ", "indicator2": "1", "subfields": [{ "code": "a", "value": "Lincolnwood, Ill. :" }, { "code": "b", "value": "NTC Pub. Group," }, { "code": "c", "value": "[1994]" } ] } },
-    { "tag": "264", { "indicator1": " ", "indicator2": "4", "subfields": [{ "code": "c", "value": "©1994." }] } },
-    { "tag": "300", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "xiii, 295 pages :" }, { "code": "b", "value": "illustrations ;" }, { "code": "c", "value": "23 cm." } ] } },
-    { "tag": "336", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "text" }, { "code": "b", "value": "txt" }, { "code": "2", "value": "rdacontent." } ] } },
-    { "tag": "337", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "unmediated" }, { "code": "b", "value": "n" }, { "code": "2", "value": "rdamedia." } ] } },
-    { "tag": "338", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "volume" }, { "code": "b", "value": "nc" }, { "code": "2", "value": "rdacarrier." } ] } },
-    { "tag": "490", { "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
-    { "tag": "830", { "indicator1": " ", "indicator2": "0", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
-    { "tag": "907", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": ".b108930609" }] } },
-    { "tag": "948", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "LTI 2018-07-09" }] } },
-    { "tag": "948", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "MARS" }] } }
+    { "tag": "010", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "92060871" }] } },
+    { "tag": "020", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "0844257443" }] } },
+    { "tag": "040", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "DLC" }, { "code": "c", "value": "DLC" }, { "code": "d", "value": "BKL" }, { "code": "d", "value": "UtOrBLW" } ] } },
+    { "tag": "049", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "BKLA" }] } },
+    { "tag": "099", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "822.33" }, { "code": "a", "value": "S52" }, { "code": "a", "value": "S7" } ] } },
+    { "tag": "100", "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "Shakespeare, William," }, { "code": "d", "value": "1564-1616." } ] } },
+    { "tag": "245", "indicator1": "1", "indicator2": "0", "subfields": [{ "code": "a", "value": "Hamlet" }, { "code": "c", "value": "William Shakespeare." } ] } },
+    { "tag": "264", "indicator1": " ", "indicator2": "1", "subfields": [{ "code": "a", "value": "Lincolnwood, Ill. :" }, { "code": "b", "value": "NTC Pub. Group," }, { "code": "c", "value": "[1994]" } ] } },
+    { "tag": "264", "indicator1": " ", "indicator2": "4", "subfields": [{ "code": "c", "value": "©1994." }] } },
+    { "tag": "300", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "xiii, 295 pages :" }, { "code": "b", "value": "illustrations ;" }, { "code": "c", "value": "23 cm." } ] } },
+    { "tag": "336", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "text" }, { "code": "b", "value": "txt" }, { "code": "2", "value": "rdacontent." } ] } },
+    { "tag": "337", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "unmediated" }, { "code": "b", "value": "n" }, { "code": "2", "value": "rdamedia." } ] } },
+    { "tag": "338", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "volume" }, { "code": "b", "value": "nc" }, { "code": "2", "value": "rdacarrier." } ] } },
+    { "tag": "490", "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
+    { "tag": "830", "indicator1": " ", "indicator2": "0", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
+    { "tag": "907", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": ".b108930609" }] } },
+    { "tag": "948", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "LTI 2018-07-09" }] } },
+    { "tag": "948", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "MARS" }] } }
   ]
 }
 ```
@@ -228,24 +229,24 @@ MARC::Record.create leader: "00815nam 2200289 a 4500", fields: [
   { "tag": "003", "value": "OCoLC" },
   { "tag": "005", "value": "19971028235910.0" },
   { "tag": "008", "value": "940909t19941994ilua 000 0 eng " },
-  { "tag": "010", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "92060871" }] } },
-  { "tag": "020", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "0844257443" }] } },
-  { "tag": "040", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "DLC" }, { "code": "c", "value": "DLC" }, { "code": "d", "value": "BKL" }, { "code": "d", "value": "UtOrBLW" } ] } },
-  { "tag": "049", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "BKLA" }] } },
-  { "tag": "099", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "822.33" }, { "code": "a", "value": "S52" }, { "code": "a", "value": "S7" } ] } },
-  { "tag": "100", { "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "Shakespeare, William," }, { "code": "d", "value": "1564-1616." } ] } },
-  { "tag": "245", { "indicator1": "1", "indicator2": "0", "subfields": [{ "code": "a", "value": "Hamlet" }, { "code": "c", "value": "William Shakespeare." } ] } },
-  { "tag": "264", { "indicator1": " ", "indicator2": "1", "subfields": [{ "code": "a", "value": "Lincolnwood, Ill. :" }, { "code": "b", "value": "NTC Pub. Group," }, { "code": "c", "value": "[1994]" } ] } },
-  { "tag": "264", { "indicator1": " ", "indicator2": "4", "subfields": [{ "code": "c", "value": "©1994." }] } },
-  { "tag": "300", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "xiii, 295 pages :" }, { "code": "b", "value": "illustrations ;" }, { "code": "c", "value": "23 cm." } ] } },
-  { "tag": "336", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "text" }, { "code": "b", "value": "txt" }, { "code": "2", "value": "rdacontent." } ] } },
-  { "tag": "337", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "unmediated" }, { "code": "b", "value": "n" }, { "code": "2", "value": "rdamedia." } ] } },
-  { "tag": "338", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "volume" }, { "code": "b", "value": "nc" }, { "code": "2", "value": "rdacarrier." } ] } },
-  { "tag": "490", { "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
-  { "tag": "830", { "indicator1": " ", "indicator2": "0", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
-  { "tag": "907", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": ".b108930609" }] } },
-  { "tag": "948", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "LTI 2018-07-09" }] } },
-  { "tag": "948", { "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "MARS" }] } }
+  { "tag": "010", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "92060871" }] } },
+  { "tag": "020", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "0844257443" }] } },
+  { "tag": "040", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "DLC" }, { "code": "c", "value": "DLC" }, { "code": "d", "value": "BKL" }, { "code": "d", "value": "UtOrBLW" } ] } },
+  { "tag": "049", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "BKLA" }] } },
+  { "tag": "099", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "822.33" }, { "code": "a", "value": "S52" }, { "code": "a", "value": "S7" } ] } },
+  { "tag": "100", "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "Shakespeare, William," }, { "code": "d", "value": "1564-1616." } ] } },
+  { "tag": "245", "indicator1": "1", "indicator2": "0", "subfields": [{ "code": "a", "value": "Hamlet" }, { "code": "c", "value": "William Shakespeare." } ] } },
+  { "tag": "264", "indicator1": " ", "indicator2": "1", "subfields": [{ "code": "a", "value": "Lincolnwood, Ill. :" }, { "code": "b", "value": "NTC Pub. Group," }, { "code": "c", "value": "[1994]" } ] } },
+  { "tag": "264", "indicator1": " ", "indicator2": "4", "subfields": [{ "code": "c", "value": "©1994." }] } },
+  { "tag": "300", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "xiii, 295 pages :" }, { "code": "b", "value": "illustrations ;" }, { "code": "c", "value": "23 cm." } ] } },
+  { "tag": "336", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "text" }, { "code": "b", "value": "txt" }, { "code": "2", "value": "rdacontent." } ] } },
+  { "tag": "337", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "unmediated" }, { "code": "b", "value": "n" }, { "code": "2", "value": "rdamedia." } ] } },
+  { "tag": "338", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "volume" }, { "code": "b", "value": "nc" }, { "code": "2", "value": "rdacarrier." } ] } },
+  { "tag": "490", "indicator1": "1", "indicator2": " ", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
+  { "tag": "830", "indicator1": " ", "indicator2": "0", "subfields": [{ "code": "a", "value": "NTC Shakespeare series." }] } },
+  { "tag": "907", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": ".b108930609" }] } },
+  { "tag": "948", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "LTI 2018-07-09" }] } },
+  { "tag": "948", "indicator1": " ", "indicator2": " ", "subfields": [{ "code": "a", "value": "MARS" }] } }
 ]
 ```
 
@@ -258,7 +259,7 @@ And access it this way:
 => "Hamlet"
 ```
 It works, but...
-- It's not very convinient to access nested data this way
+- It's not very convinient to access nested data this way.
 - We cannot easily attach logic to our JSON data without polluting our model.
 
 What if we could interact with our JSON data the same way we do with ActiveRecord associations
@@ -266,8 +267,8 @@ What if we could interact with our JSON data the same way we do with ActiveRecor
 [AttributesAPI](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute)!
 
 First, we have to define a custom type which...
-- Maps JSON objects to ActiveModel-compliant objects
-- Handles collections
+- Maps JSON objects to ActiveModel-compliant objects.
+- Handles collections.
 
 To do that, we'll add the following options to our type:
 - `:class_name`: The class name of an ActiveModel-compliant object.
@@ -319,7 +320,7 @@ Now we can use it in our models:
 ```ruby
 class MARC::Record < ApplicationRecord
   attribute :fields, :document
-    class_name: "::MARC::Record::Field"
+    class_name: "::MARC::Record::Field",
     collection: true
 
   # Hash-like reader method
@@ -336,7 +337,7 @@ class MARC::Record::Field
   attribute :indicator1, :integer
   attribute :indicator2, :integer
   attribute :subfields, :document
-    class_name: "::MARC::Record::Field::Subfield"
+    class_name: "::MARC::Record::Field::Subfield",
     collection: true
 
   attr_reader :value
@@ -365,10 +366,10 @@ end
 ```
 ```ruby
 > record = MARC::Record.first
-> record.fields.document_class
+> record.fields.first.class
 => MARC::Record::Field
 
-> record.fields.first.subfields.document_class
+> record.fields.first.subfields.first.class
 => MARC::Record::Field::Subfield
 
 > record.fields["245"]["a"].value
@@ -479,7 +480,7 @@ A module which includes everything needed to work with the `:document` type
 and `#save` to emulate persistence.
 
 ### `ActiveModel::Collecting`
-A mixin which provides capabailities similar to ActiveRecord collection proxies. Provides
+A module which provides capabailities similar to ActiveRecord collection proxies. Provides
 support for nested attributes.
 
 ### `ActiveModel::Collection`
