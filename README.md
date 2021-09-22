@@ -227,6 +227,14 @@ this kind of data in a text field.
 
 In our case, we're using JSON to represent MARC data. Luckily for us, we can store JSON
 data directly in relational databases like Postgres or MySQL:
+
+```ruby
+# config/initializers/inflections.rb
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.acronym "MARC"
+end
+```
+
 ```bash
 > rails g model marc/record leader:string fields:json
 > rails db:migrate
