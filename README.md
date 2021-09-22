@@ -465,7 +465,7 @@ Data that don't fit in the [relational model](https://www.digitalocean.com/commu
 > Semi-structured data is a form of structured data that does not obey the tabular structure of data models associated with relational databases or other forms of data tables, but nonetheless contains tags or other markers to separate semantic elements and enforce hierarchies of records and fields within the data. Therefore, it is also known as self-describing structure. - Wikipedia
 
 
-### Components
+## Components
 ### `ActiveModel::Embedding`
 API for defining [embedded associations](#embedded-associations). Uses the Attributes API with
 the `:document` type.
