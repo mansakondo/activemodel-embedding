@@ -424,8 +424,8 @@ We can then use our embedded associations in the views as nested attributes:
     <% if field.control_field? %>
       <%= field_fields.text_field :value %>
     <% else %>
-      <%= field_fields.number_field :indicator1
-      <%= field_fields.number_field :indicator2
+      <%= field_fields.number_field :indicator1 %>
+      <%= field_fields.number_field :indicator2 %>
 
       <%= field_fields.fields_for :subfields do |subfield_fields| %>
         <%= subfield_fields.label :code %>
