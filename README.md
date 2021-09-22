@@ -391,6 +391,9 @@ end
 > record.fields.first.subfields.first.class
 => MARC::Record::Field::Subfield
 
+> record.fields.first.control_field?
+=> true
+
 > record.fields["245"]["a"].value
 => "Hamlet"
 ```
