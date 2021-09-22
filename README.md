@@ -380,6 +380,10 @@ class MARC::Record::Field
     occurences.first unless occurences.count > 1
   end
 
+  # Used to track changes
+  def ==(other)
+    attributes == other.attributes
+  end
 end
 ```
 ```ruby
@@ -390,6 +394,11 @@ class MARC::Record::Field::Subfield
 
   attribute :code, :string
   attribute :value, :string
+
+  # Used to track changes
+  def ==(other)
+    attributes == other.attributes
+  end
 end
 ```
 ```ruby
@@ -405,6 +414,16 @@ end
 
 > record["245"]["a"].value
 => "Hamlet"
+
+> record.changed?
+=> false
+
+> record["245"]["a"].value = "Romeo and Juliet"
+> record["245"]["a"].value
+=> "Romeo and Juliet"
+
+> record.changed?
+=> true
 ```
 
 Et voilà ! Home-made associations !
