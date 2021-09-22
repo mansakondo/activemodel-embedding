@@ -271,8 +271,8 @@ MARC::Record.create leader: "00815nam 2200289 a 4500", fields: [
 And access it this way:
 ```ruby
 > record = MARC::Record.first
-> field = record.fields.find { |field| field.tag == "245" }
-> subfield = field.subfields.first
+> field = record.fields.find { |field| field["tag"] == "245" }
+> subfield = field["subfields"].first
 > subfield["value"]
 => "Hamlet"
 ```
