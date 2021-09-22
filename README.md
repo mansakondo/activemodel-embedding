@@ -264,7 +264,8 @@ It works, but...
 
 What if we could interact with our JSON data the same way we do with ActiveRecord associations
 ? Enters ActiveModel and the
-[AttributesAPI](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute)!
+[AttributesAPI](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute)
+!
 
 First, we have to define a custom type which...
 - Maps JSON objects to ActiveModel-compliant objects.
