@@ -99,4 +99,3 @@ module ActiveModel
     ::ActiveRecord::Type.register :document, Document
   end
 end
-
