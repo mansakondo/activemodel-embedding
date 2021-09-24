@@ -60,6 +60,8 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
     @record.reload
 
     assert_equal "Romeo and Juliet", @record["245"]["a"].value
+
+    assert @record["245"]["a"].persisted?
   end
 
   test "should track changes" do
