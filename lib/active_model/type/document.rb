@@ -28,15 +28,18 @@ module ActiveModel
         return unless collection?
 
         if default_collection?
-          @collection_class ||= ::ActiveModel::Collection
+          @collection_class ||= ::ActiveModel::Embedding::Collection
         else
           @collection_class ||= resolve_constant collection, from: context
         end
       end
 
       def cast(value)
+        return unless value
+
         if collection?
           documents = value.map { |attributes| process attributes }
+
           collection_class.new(documents)
         else
           process value
@@ -52,7 +55,10 @@ module ActiveModel
       end
 
       def deserialize(json)
+        return unless json
+
         value = ActiveSupport::JSON.decode(json)
+
         cast value
       end
 
@@ -88,7 +94,7 @@ module ActiveModel
       def lookup_or_return(cast_type)
         case cast_type
         when Symbol
-          ::ActiveModel::Type.lookup(cast_type)
+          Type.lookup(cast_type)
         else
           cast_type
         end
@@ -96,6 +102,5 @@ module ActiveModel
     end
 
     register :document, Document
-    ::ActiveRecord::Type.register :document, Document
   end
 end
