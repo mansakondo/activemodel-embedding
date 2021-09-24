@@ -6,12 +6,9 @@ Gem::Specification.new do |spec|
   spec.authors     = ["mansakondo"]
   spec.email       = ["mansakondo22@gmail.com"]
   spec.homepage    = "https://github.com/mansakondo/activemodel-embedding"
-  spec.summary     = "An ActiveModel extension to model your semi-structured data using embedded associations"
+  spec.summary     = "Embedded associations for your semi-structured data"
   spec.description = "An ActiveModel extension to model your semi-structured data using embedded associations"
   spec.license     = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
