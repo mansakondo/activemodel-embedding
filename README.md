@@ -53,13 +53,13 @@ multi-table joins.
 We can then model our data this way:
 ```ruby
 class Book < ApplicationRecord
-  include ActiveModel::Embedding
+  include ActiveModel::Embedding::Associations
 
   embeds_many :parts
 end
 
 class Book::Part
-  include ActiveModel::Document
+  include ActiveModel::Embedding::Document
 
   attribute :title, :string
 
@@ -67,7 +67,7 @@ class Book::Part
 end
 
 class Book::Part::Chapter
-  include ActiveModel::Document
+  include ActiveModel::Embedding::Document
 
   attribute :title, :string
 
@@ -75,6 +75,8 @@ class Book::Part::Chapter
 end
 
 class Book::Part::Chapter::Section
+  include ActiveModel::Embedding::Document
+
   attribute :title, :string
   attribute :content, :string
 end
@@ -320,6 +322,7 @@ class DocumentType < ::ActiveModel::Type::Value
 
   def deserialize(json)
     value = ActiveSupport::JSON.decode(json)
+
     cast value
   end
 
@@ -443,7 +446,7 @@ be afraid to dive into it if you want to know how it was implemented !)
 Here's the updated version with the extension:
 ```ruby
 class MARC::Record < ApplicationRecord
-  include ActiveModel::Embedding
+  include ActiveModel::Embedding::Associations
 
   embeds_many :fields
 
@@ -452,11 +455,18 @@ end
 ```
 ```ruby
 class MARC::Record::Field
-  include ActiveModel::Document
+  include ActiveModel::Embedding::Document
 
   # ...
 
   embeds_many :subfields
+
+  # ...
+end
+```
+```ruby
+class MARC::Record::Field::Subfield
+  include ActiveModel::Embedding::Document
 
   # ...
 end
@@ -489,12 +499,12 @@ We can then use our embedded associations in the views as nested attributes:
 
 ## Concepts
 ### Document
-A JSON object mapped to a PORO which includes `ActiveModel::Document`. Usually part of a
+A JSON object mapped to a PORO which includes `ActiveModel::Embedding::Document`. Usually part of a
 [collection](#collection).
 
 ### Collection
-A JSON array mapped to an `ActiveModel::Collection` (or any class that includes
-`ActiveModel::Collecting`). Stores collections of
+A JSON array mapped to an `ActiveModel::Embedding::Collection` (or any class that includes
+`ActiveModel::Embedding::Collecting`). Stores collections of
 [documents](#document).
 
 ### Embedded associations
@@ -510,26 +520,26 @@ Data that don't fit in the [relational model](https://www.digitalocean.com/commu
 
 
 ## Components
-### `ActiveModel::Embedding`
+### `ActiveModel::Type::Document`
+A polymorphic cast type (registered as `:document`). Maps JSON objects to POROs that includes
+`ActiveModel::Embedding::Document`. Provides support for defining [collections](#collection).
+
+### `ActiveModel::Embedding::Associations`
 API for defining [embedded associations](#embedded-associations). Uses the Attributes API with
 the `:document` type.
 
-### `ActiveModel::Type::Document`
-A polymorphic cast type (registered as `:document`). Maps JSON objects to POROs that includes
-`ActiveModel::Document`. Provides support for defining [collections](#collection).
-
-### `ActiveModel::Document`
+### `ActiveModel::Embedding::Document`
 A module which includes everything needed to work with the `:document` type
 (`ActiveModel::Model`, `ActiveModel::Attributes`, `ActiveModel::Serializers::JSON`,
-`ActiveModel::Embedding`). Provides an `id` attribute and implements methods like `#persisted?`
+`ActiveModel::Embedding::Associations`). Provides an `id` attribute and implements methods like `#persisted?`
 and `#save` to emulate persistence.
 
-### `ActiveModel::Collecting`
+### `ActiveModel::Embedding::Collecting`
 A module which provides capabailities similar to ActiveRecord collection proxies. Provides
 support for nested attributes.
 
-### `ActiveModel::Collection`
-Default collection class. Includes `ActiveModel::Collecting`.
+### `ActiveModel::Embedding::Collection`
+Default collection class. Includes `ActiveModel::Embedding::Collecting`.
 
 ## Installation
 Add this line to your application's Gemfile:
