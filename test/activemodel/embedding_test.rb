@@ -7,6 +7,41 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
 
   fixtures "marc/records"
 
+  class SomeType < ActiveModel::Type::Value
+    def cast(value)
+      value.cast_type = self.class
+      super
+    end
+  end
+
+  ActiveModel::Type.register(:some_type, SomeType)
+
+  class SomeOtherType < ActiveModel::Type::Value
+    attr_reader :context
+
+    def initialize(context:)
+      @context = context
+    end
+
+    def cast(value)
+      value.cast_type = self.class
+      value.context = context
+      super
+    end
+  end
+
+  class Thing
+    attr_accessor :cast_type
+    attr_accessor :context
+  end
+
+  class SomeModel
+    include ActiveModel::Embedding::Document
+
+    embeds_many :things, cast_type: :some_type
+    embeds_many :other_things, cast_type: SomeOtherType.new(context: self)
+  end
+
   setup do
     @record = marc_records(:hamlet)
   end
@@ -70,5 +105,13 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
     @record["245"]["a"].value = "Romeo and Juliet"
 
     assert @record.changed?
+  end
+
+  test "should handle custom types" do
+    @some_model = SomeModel.new things: Array.new(3) { Thing.new }, other_things: Array.new(3) { Thing.new }
+
+    assert_equal SomeType, @some_model.things.first.cast_type
+    assert_equal SomeOtherType, @some_model.other_things.first.cast_type
+    assert_equal SomeModel, @some_model.other_things.first.context
   end
 end
