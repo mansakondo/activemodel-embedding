@@ -94,7 +94,11 @@ module ActiveModel
       def lookup_or_return(cast_type)
         case cast_type
         when Symbol
-          Type.lookup(cast_type)
+          begin
+            Type.lookup(cast_type)
+          rescue
+            ActiveRecord::Type.lookup(cast_type)
+          end
         else
           cast_type
         end
