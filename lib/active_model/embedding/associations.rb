@@ -39,9 +39,9 @@ module ActiveModel
             collection: collection || true,
             context: self.to_s
 
-          nested_attributes_for attr_name
-
           register_embedded_association attr_name
+
+          nested_attributes_for attr_name
         end
 
         def embeds_one(attr_name, class_name: nil, cast_type: nil)
@@ -52,9 +52,9 @@ module ActiveModel
             cast_type: cast_type,
             context: self.to_s
 
-          nested_attributes_for attr_name
-
           register_embedded_association attr_name
+
+          nested_attributes_for attr_name
         end
 
         def embedded_associations
@@ -67,12 +67,12 @@ module ActiveModel
           attr_name.to_s.singularize.camelize
         end
 
-        def nested_attributes_for(attr_name)
-          delegate :attributes=, to: :"#{attr_name}", prefix: true
-        end
-
         def register_embedded_association(name)
           embedded_associations << name
+        end
+
+        def nested_attributes_for(attr_name)
+          delegate :attributes=, to: :"#{attr_name}", prefix: true
         end
       end
     end
