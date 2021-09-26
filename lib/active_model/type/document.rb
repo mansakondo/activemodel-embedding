@@ -2,7 +2,8 @@
 
 module ActiveModel
   module Type
-    class Value; end
+    class Value
+    end
 
     class Document < Value
       attr_reader :document_class, :cast_type
@@ -28,7 +29,7 @@ module ActiveModel
         return unless collection?
 
         if default_collection?
-          @collection_class ||= ::ActiveModel::Embedding::Collection
+          @collection_class ||= ActiveModel::Embedding::Collection
         else
           @collection_class ||= resolve_constant collection, from: context
         end
