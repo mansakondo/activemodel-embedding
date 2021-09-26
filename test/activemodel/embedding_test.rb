@@ -7,6 +7,11 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
 
   fixtures "marc/records"
 
+  class SomeCollection
+    include Enumerable
+    include ActiveModel::Embedding::Collecting
+  end
+
   class SomeType < ActiveModel::Type::Value
     def cast(value)
       value.cast_type = self.class
@@ -38,12 +43,13 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
   class SomeModel
     include ActiveModel::Embedding::Document
 
-    embeds_many :things, cast_type: :some_type
+    embeds_many :things, collection: "SomeCollection", cast_type: :some_type
     embeds_many :other_things, cast_type: SomeOtherType.new(context: self)
   end
 
   setup do
     @record = marc_records(:hamlet)
+    @some_model = SomeModel.new things: Array.new(3) { Thing.new }, other_things: Array.new(3) { Thing.new }
   end
 
   test "should handle mass assignment correctly" do
@@ -107,9 +113,12 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
     assert @record.changed?
   end
 
-  test "should handle custom types" do
-    @some_model = SomeModel.new things: Array.new(3) { Thing.new }, other_things: Array.new(3) { Thing.new }
+  test "should handle custom collections" do
+    assert_equal SomeCollection, @some_model.things.class
+    assert_equal Thing, @some_model.things.document_class
+  end
 
+  test "should handle custom types" do
     assert_equal SomeType, @some_model.things.first.cast_type
     assert_equal SomeOtherType, @some_model.other_things.first.cast_type
     assert_equal SomeModel, @some_model.other_things.first.context
