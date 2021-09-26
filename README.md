@@ -104,6 +104,72 @@ And display it like this (with nested attributes support out-of-the-box):
   <% end %>
 <% end %>
 ```
+### Custom collections
+```ruby
+class SomeCollection
+  include Enumerable
+  include ActiveModel::Embedding::Collecting
+end
+
+class Thing
+end
+
+class SomeModel
+  include ActiveModel::Embedding::Document
+
+  embeds_many :things, collection: "SomeCollection"
+end
+
+some_model = SomeModel.new things: Array.new(3) { Thing.new }
+some_model.things.class
+# => SomeCollection
+```
+### Custom types
+```ruby
+# config/initializers/types.rb
+class SomeType < ActiveModel::Type::Value
+  def cast(value)
+    value.cast_type = self.class
+    super
+  end
+end
+
+ActiveModel::Type.register(:some_type, SomeType)
+
+class SomeOtherType < ActiveModel::Type::Value
+  attr_reader :context
+
+  def initialize(context:)
+    @context = context
+  end
+
+  def cast(value)
+    value.cast_type = self.class
+    value.context = context
+    super
+  end
+end
+```
+```ruby
+class Thing
+  attr_accessor :cast_type
+  attr_accessor :context
+end
+
+class SomeModel
+  include ActiveModel::Embedding::Document
+
+  embeds_many :things, cast_type: :some_type
+  embeds_many :other_things, cast_type: SomeOtherType.new(context: self)
+end
+
+@some_model.things.first.cast_type
+# => SomeType
+@some_model.other_things.first.cast_type
+# => SomeOtherType
+@some_model.other_things.first.context
+# => SomeModel
+```
 
 ### Associations
 #### embeds_many
