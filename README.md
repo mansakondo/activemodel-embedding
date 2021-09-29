@@ -86,26 +86,24 @@ And display it like this (with nested attributes support out-of-the-box):
 ```erb
 # app/views/books/_form.html.erb
 <%= form_with model: @book do |book_form| %>
-  <% book.parts.each do |part| %>
-    <%= book_form.fields_for :parts, part do |part_fields| %>
+  <%= book_form.fields_for :parts do |part_fields| %>
 
-      <%= part_fields.label :title %>
+    <%= part_fields.label :title %>
+    <%= part_fields.text_field :title %>
 
-      <% part.chapters.each do |chapter| %>
-        <%= part_fields.fields_for :chapters, chapter do |chapter_fields| %>
-          <%= chapter_fields.label :title %>
+    <%= part_fields.fields_for :chapters do |chapter_fields| %>
+      <%= chapter_fields.label :title %>
+      <%= chapter_fields.text_field :title %>
 
-          <% chapter.sections.each do |section| %>
-            <%= chapter_fields.fields_for :sections, section do |section_fields| %>
-              <%= section_fields.label :title %>
-              <%= section_fields.text_area :content %>
-            <% end %>
-          <% end %>
-        <% end %>
+      <%= chapter_fields.fields_for :sections do |section_fields| %>
+        <%= section_fields.label :title %>
+        <%= section_fields.text_field :title %>
+        <%= section_fields.text_area :content %>
       <% end %>
-
     <% end %>
   <% end %>
+
+  <%= book_form.submit %>
 <% end %>
 ```
 ### Custom collections
@@ -545,10 +543,11 @@ We can then use our embedded associations in the views as nested attributes:
 ```erb
 # app/views/marc/records/_form.html.erb
 <%= form_with model: @record do |record_form| %>
-  <%= @record.fields.each do |field| %>
+  <% @record.fields.each do |field| %>
     <%= record_form.fields_for :fields, field do |field_fields| %>
 
-      <%= field_fields.label :tag, value: field.tag %>
+      <%= field_fields.label :tag %>
+      <%= field_fields.text_field :tag %>
 
       <% if field.control_field? %>
         <%= field_fields.text_field :value %>
@@ -556,16 +555,16 @@ We can then use our embedded associations in the views as nested attributes:
         <%= field_fields.text_field :indicator1 %>
         <%= field_fields.text_field :indicator2 %>
 
-        <%= field.subfields.each do |subfield| %>
-          <%= field_fields.fields_for :subfields, subfield do |subfield_fields| %>
-            <%= subfield_fields.label :code, value: subfield.code %>
-            <%= subfield_fields.text_field :value %>
-          <% end %>
+        <%= field_fields.fields_for :subfields do |subfield_fields| %>
+          <%= subfield_fields.label :code %>
+          <%= subfield_fields.text_field :code %>
+          <%= subfield_fields.text_field :value %>
         <% end %>
       <% end %>
-
     <% end %>
   <% end %>
+
+  <%= record_form.submit %>
 <% end %>
 ```
 
