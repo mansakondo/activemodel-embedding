@@ -618,12 +618,17 @@ Default collection class. Includes `ActiveModel::Embedding::Collecting`.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'activemodel-embedding', github: "mansakondo/activemodel-embedding"
+gem 'activemodel-embedding'
 ```
 
 And then execute:
 ```bash
 $ bundle
+```
+
+Or install it yourself as:
+```bash
+$ gem install activemodel-embedding
 ```
 
 ## License
