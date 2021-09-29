@@ -105,7 +105,6 @@ And display it like this (with nested attributes support out-of-the-box):
 ### Custom collections
 ```ruby
 class SomeCollection
-  include Enumerable
   include ActiveModel::Embedding::Collecting
 end
 
