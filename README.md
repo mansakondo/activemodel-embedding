@@ -89,11 +89,9 @@ And display it like this (with nested attributes support out-of-the-box):
   <%= book_form.fields_for :parts do |part_fields| %>
 
     <%= part_fields.label :title %>
-    <%= part_fields.text_area :content %>
 
     <%= part_fields.fields_for :chapters do |chapter_fields| %>
       <%= chapter_fields.label :title %>
-      <%= chapter_fields.text_area :content %>
 
       <%= chapter_fields.fields_for :chapters do |chapter_fields| %>
         <%= section_fields.label :title %>
