@@ -85,7 +85,7 @@ end
 And display it like this (with nested attributes support out-of-the-box):
 ```erb
 # app/views/books/_form.html.erb
-<%= @form_with @book do |book_form| %>
+<%= form_with model: @book do |book_form| %>
   <%= book_form.fields_for :parts do |part_fields| %>
 
     <%= part_fields.label :title %>
@@ -538,7 +538,7 @@ end
 We can then use our embedded associations in the views as nested attributes:
 ```erb
 # app/views/marc/records/_form.html.erb
-<%= @form_with @record do |record_form| %>
+<%= form_with model: @record do |record_form| %>
   <%= record_form.fields_for :fields do |field_fields| %>
 
     <%= field_fields.label :tag %>
