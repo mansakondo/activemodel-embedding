@@ -87,6 +87,10 @@ module ActiveModel
         documents.all?(&:save)
       end
 
+      def persisted?
+        documents.all?(&:persisted?)
+      end
+
       def each
         return self.to_enum unless block_given?
 
