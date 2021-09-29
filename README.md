@@ -548,7 +548,7 @@ We can then use our embedded associations in the views as nested attributes:
   <%= @record.fields.each do |field| %>
     <%= record_form.fields_for :fields, field do |field_fields| %>
 
-      <%= field_fields.label :tag %>
+      <%= field_fields.label :tag, value: field.tag %>
 
       <% if field.control_field? %>
         <%= field_fields.text_field :value %>
@@ -558,7 +558,7 @@ We can then use our embedded associations in the views as nested attributes:
 
         <%= field.subfields.each do |subfield| %>
           <%= field_fields.fields_for :subfields, subfield do |subfield_fields| %>
-            <%= subfield_fields.label :code %>
+            <%= subfield_fields.label :code, value: subfield.code %>
             <%= subfield_fields.text_field :value %>
           <% end %>
         <% end %>
