@@ -614,6 +614,10 @@ support for nested attributes.
 Default collection class. Includes `ActiveModel::Embedding::Collecting`.
 
 ## Installation
+Note: This project is still experimental, so the behaviour is likely to change quite a bit
+(especially logic related to views). So be sure to always update to the lastest version, and
+stay tuned, as I'll be updating this README to document the changes.
+
 Add this line to your application's Gemfile:
 
 ```ruby
