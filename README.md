@@ -5,7 +5,7 @@ An ActiveModel extension to model your [semi-structured data](#semi-structured-d
 - [Features](#features)
 - [Introduction](#introduction)
 - [Usage](#usage)
-- [Warning](#warning)
+- [:warning: Warning](#warning)
 - [Use Case: Dealing with bibliographic data](#use-case%3A-dealing-with-bibliographic-data)
 - [Concepts](#concepts)
 - [Components](#components)
@@ -199,7 +199,7 @@ Options:
 - `:class_name`: Same as above.
 - `:cast_type`: Same as above.
 
-## Warning
+## :warning: Warning
 [Embedded associations](#embedded-associations) should only be used if you're sure that the data you want to embed is
 **encapsulated**. Which means, that embedded associations should only be accessed through the
 parent, and not from the outside. Thus, this should only be used if performing joins isn't a
@@ -623,10 +623,6 @@ support for nested attributes.
 Default collection class. Includes `ActiveModel::Embedding::Collecting`.
 
 ## Installation
-Note: This project is still experimental, so the behaviour is likely to change quite a bit
-(especially logic related to views). So be sure to always update to the lastest version, and
-stay tuned, as I'll be updating this README to document the changes.
-
 Add this line to your application's Gemfile:
 
 ```ruby
