@@ -19,24 +19,22 @@ module ActiveModel
         case documents_attributes
         when Hash
           documents_attributes.each do |index, document_attributes|
-            id = fetch_id(document_attributes)
+            index    = index.to_i
+            id       = fetch_id(document_attributes) || index
+            document = find id if id
 
-            if id
-              document = find id
-            else
-              index    = index.to_i
-              document = documents[index]
+            unless document
+              document = documents[index] || build
             end
 
             document.attributes = document_attributes
           end
         when Array
           documents_attributes.each do |document_attributes|
-            id = fetch_id(document_attributes)
+            id       = fetch_id(document_attributes)
+            document = find id if id
 
-            if id
-              document = find id
-            else
+            unless document
               document = build
             end
 
@@ -108,7 +106,7 @@ module ActiveModel
       private
 
       def fetch_id(attributes)
-        attributes["id"] || attributes[:id]
+        attributes["id"].to_i
       end
 
       def raise_attributes_error
