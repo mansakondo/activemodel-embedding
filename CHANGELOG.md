@@ -1,8 +1,8 @@
 # Changelog
 
-## [v0.1.1](https://github.com/mansakondo/activemodel-embedding/tree/v0.1.1) (2021-09-26)
+## [v0.1.4](https://github.com/mansakondo/activemodel-embedding/tree/v0.1.4) (2021-09-30)
 
-[Full Changelog](https://github.com/mansakondo/activemodel-embedding/compare/11b0d2d634fc24a5371c0bb3542dd1c7aaa2a7df...v0.1.1)
+[Full Changelog](https://github.com/mansakondo/activemodel-embedding/compare/11b0d2d634fc24a5371c0bb3542dd1c7aaa2a7df...v0.1.4)
 
 
 
