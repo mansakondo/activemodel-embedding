@@ -7,6 +7,7 @@ module ActiveModel
 
       attr_reader :documents, :document_class
       alias_method :to_a, :documents
+      alias_method :to_ary, :to_a
 
       def initialize(documents)
         @documents      = documents
