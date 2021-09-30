@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activemodel-embedding (0.1.4)
+    activemodel-embedding (0.1.5)
       rails (>= 6.1.4)
 
 GEM
