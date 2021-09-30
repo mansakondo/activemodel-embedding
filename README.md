@@ -13,7 +13,7 @@ An ActiveModel extension to model your [semi-structured data](#semi-structured-d
 - [License](#license)
 
 ## Features
-- ActiveRecord-like associations (powered by the [Attributes API](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute))
+- [Embedded associations](#embedded-associations) (powered by the [Attributes API](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html))
 - Nested attributes support out-of-the-box
 - [Custom collections](#custom-collections)
 - [Custom types](#custom-types)
