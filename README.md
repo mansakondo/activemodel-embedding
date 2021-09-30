@@ -5,7 +5,7 @@ An ActiveModel extension to model your [semi-structured data](#semi-structured-d
 - [Features](#features)
 - [Introduction](#introduction)
 - [Usage](#usage)
-- [:warning: Warning](#warning)
+- [:warning: Warning](#warning-warning)
 - [Use Case: Dealing with bibliographic data](#use-case%3A-dealing-with-bibliographic-data)
 - [Concepts](#concepts)
 - [Components](#components)
