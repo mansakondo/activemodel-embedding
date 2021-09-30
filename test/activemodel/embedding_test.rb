@@ -69,7 +69,7 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
     assert field.subfields.all?(&:id)
 
     id           = field.subfields.first.id
-    random_index = Random.new_seed
+    random_index = rand 100
     params       = ::ActionController::Parameters.new(subfields_attributes: { "#{random_index}" => { id: id, value: "ShapeUp" }})
     permitted    = params.permit(subfields_attributes: [:id, :value])
 
