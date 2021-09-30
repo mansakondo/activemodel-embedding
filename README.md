@@ -2,6 +2,7 @@
 An ActiveModel extension to model your [semi-structured data](#semi-structured-data) using
 [embedded associations](#embedded-associations).
 
+- [Features](#features)
 - [Introduction](#introduction)
 - [Usage](#usage)
 - [Warning](#warning)
@@ -10,6 +11,14 @@ An ActiveModel extension to model your [semi-structured data](#semi-structured-d
 - [Components](#components)
 - [Installation](#installation)
 - [License](#license)
+
+## Features
+- ActiveRecord-like associations (powered by the [Attributes API](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute))
+- Nested attributes support out-of-the-box
+- [Custom collections](#custom-collections)
+- [Custom types](#custom-types)
+- Autosaving
+- Dirty tracking
 
 ## Introduction
 Relational databases are very powerful. Their power comes from their ability to...
