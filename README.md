@@ -1,4 +1,4 @@
-# ActiveModel::Embedding
+# ActiveModel::Embedding [![Gem Version](https://badge.fury.io/rb/activemodel-embedding.svg)](https://badge.fury.io/rb/activemodel-embedding)
 An ActiveModel extension to model your [semi-structured data](#semi-structured-data) using
 [embedded associations](#embedded-associations).
 
