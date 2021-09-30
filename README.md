@@ -646,3 +646,10 @@ $ gem install activemodel-embedding
 ## License
 The gem is available as open source under the terms of the [MIT
 License](https://opensource.org/licenses/MIT).
+
+## Alternatives
+Here's are some alternatives I came accross after I've started working on this gem:
+- [attr_json](https://github.com/jrochkind/attr_json)
+- [store_model](https://github.com/DmitryTsepelev/store_model)
+
+Each one uses a different approach to solve the same problem.
