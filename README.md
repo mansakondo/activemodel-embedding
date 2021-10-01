@@ -610,13 +610,13 @@ API for defining [embedded associations](#embedded-associations). Uses the Attri
 the `:document` type.
 
 ### `ActiveModel::Embedding::Document`
-A module which includes everything needed to work with the `:document` type
+A mixin which includes everything needed to work with the `:document` type
 (`ActiveModel::Model`, `ActiveModel::Attributes`, `ActiveModel::Serializers::JSON`,
 `ActiveModel::Embedding::Associations`). Provides an `id` attribute and implements methods like `#persisted?`
 and `#save` to emulate persistence.
 
 ### `ActiveModel::Embedding::Collecting`
-A module which provides capabailities similar to ActiveRecord collection proxies. Provides
+A mixin which provides capabailities similar to ActiveRecord collection proxies. Provides
 support for nested attributes.
 
 ### `ActiveModel::Embedding::Collection`
