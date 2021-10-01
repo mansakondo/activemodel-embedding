@@ -21,7 +21,7 @@ module ActiveModel
                 public_send association_name
               end.compact
 
-              targets.all?(&:save)
+              targets.each(&:save)
             end
 
             yield
