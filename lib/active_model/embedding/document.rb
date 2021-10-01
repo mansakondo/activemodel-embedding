@@ -5,6 +5,7 @@ module ActiveModel
     module Document
       def self.included(klass)
         klass.class_eval do
+          extend ClassMethods
           extend ActiveModel::Callbacks
 
           define_model_callbacks :save
@@ -33,6 +34,13 @@ module ActiveModel
           def ==(other)
             attributes == other.attributes
           end
+        end
+      end
+
+      module ClassMethods
+        def validates_associated(*attr_names)
+          validates_with ActiveRecord::Validations::AssociatedValidator,
+            _merge_attributes(attr_names)
         end
       end
     end

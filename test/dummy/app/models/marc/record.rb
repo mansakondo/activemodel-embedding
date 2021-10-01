@@ -3,6 +3,8 @@ class MARC::Record < ApplicationRecord
 
   embeds_many :fields
 
+  validates_associated :fields
+
   # Hash-like reader method
   def [](tag)
     occurences = fields.select { |field| field.tag == tag }

@@ -8,6 +8,9 @@ class MARC::Record::Field
 
   embeds_many :subfields
 
+  validates :tag, presence: true, format: { with: /\d{3}/ }
+  validates_associated :subfields, unless: :control_field?
+
   def attributes
     if control_field?
       {

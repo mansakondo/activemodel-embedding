@@ -105,6 +105,22 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
     assert @record["245"]["a"].persisted?
   end
 
+  test "should perform validations" do
+    assert @record.valid?
+
+    last_field = @record.fields.to_a.last
+
+    last_field.subfields.first.code = ""
+
+    refute @record.valid?
+    refute @record.save
+
+    last_field.subfields.first.code = "a"
+
+    assert @record.valid?
+    assert @record.save
+  end
+
   test "should track changes" do
     refute @record.changed?
 
