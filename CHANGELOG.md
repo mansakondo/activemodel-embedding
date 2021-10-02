@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.0](https://github.com/mansakondo/activemodel-embedding/tree/v0.2.0) (2021-10-02)
+- Add validations support
+- Patch autosaving
+
+[Full Changelog](https://github.com/mansakondo/activemodel-embedding/compare/v0.1.5...v0.2.0)
+
 ## [v0.1.5](https://github.com/mansakondo/activemodel-embedding/tree/v0.1.5) (2021-09-30)
 
 [Full Changelog](https://github.com/mansakondo/activemodel-embedding/compare/11b0d2d634fc24a5371c0bb3542dd1c7aaa2a7df...v0.1.5)
