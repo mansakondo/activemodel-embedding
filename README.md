@@ -15,6 +15,7 @@ An ActiveModel extension to model your [semi-structured data](#semi-structured-d
 ## Features
 - [Embedded associations](#embedded-associations) (powered by the [Attributes API](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html))
 - Nested attributes support out-of-the-box
+- [Validations](#validations)
 - [Custom collections](#custom-collections)
 - [Custom types](#custom-types)
 - Autosaving
@@ -115,6 +116,45 @@ And display it like this (with nested attributes support out-of-the-box):
   <%= book_form.submit %>
 <% end %>
 ```
+### Validations
+```ruby
+class SomeModel < ApplicationRecord
+  include ActiveModel::Embedding::Associations
+
+  embeds_many :things
+
+  validates_associated :things
+end
+
+class Thing
+  include ActiveModel::Embedding::Document
+
+  embeds_many :other_things
+
+  validates_associated :other_things
+end
+
+class OtherThing
+  include ActiveModel::Embedding::Document
+
+  attribute :some_attribute, :string
+
+  validates :some_attribute, presence: true
+end
+```
+```ruby
+things = Array.new(3) { Thing.new(other_things: Array.new(3) { OtherThing.new } }
+record = SomeModel.new things: things
+
+record.valid? # => false
+record.save # => false
+
+record.things.other_things = Array.new(3) { OtherThing.new(some_attribute: "present") }
+
+record.valid? # => true
+record.save # => true
+```
+
 ### Custom collections
 ```ruby
 class SomeCollection
