@@ -22,7 +22,7 @@ module ActiveModel
           documents_attributes.each do |index, document_attributes|
             index    = index.to_i
             id       = fetch_id(document_attributes) || index
-            document = find id if id
+            document = find_by_id id if id
 
             unless document
               document = documents[index] || build
@@ -33,7 +33,7 @@ module ActiveModel
         when Array
           documents_attributes.each do |document_attributes|
             id       = fetch_id(document_attributes)
-            document = find id if id
+            document = find_by_id id if id
 
             unless document
               document = build
@@ -46,7 +46,7 @@ module ActiveModel
         end
       end
 
-      def find(id)
+      def find_by_id(id)
         documents.find { |document| document.id == id }
       end
 
