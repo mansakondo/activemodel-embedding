@@ -139,4 +139,13 @@ class ActiveModel::EmbeddingTest < ActiveSupport::TestCase
     assert_equal SomeOtherType, @some_model.other_things.first.cast_type
     assert_equal SomeModel, @some_model.other_things.first.context
   end
+
+  test "should handle values that are already type casted" do
+    fields = @record.fields
+
+    @record.fields = nil
+    @record.fields = fields
+
+    assert @record.fields
+  end
 end
