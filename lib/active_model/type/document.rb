@@ -39,10 +39,14 @@ module ActiveModel
         return unless value
 
         if collection?
+          return value if value.respond_to? :document_class
+
           documents = value.map { |attributes| process attributes }
 
           collection_class.new(documents)
         else
+          return value if value.respond_to? :id
+
           process value
         end
       end
