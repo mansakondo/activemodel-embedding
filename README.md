@@ -43,16 +43,13 @@ time, we only need to
 model. So it makes more sense to use simple JSON columns for those, instead of going all-in,
 and dump your beloved relational database for MongoDB.
 
-Currently in Rails, we have several features that we can use to interact with JSON:
-- [JSON serialization](https://api.rubyonrails.org/classes/ActiveModel/Serializers/JSON.html)
-- [JSON column](https://guides.rubyonrails.org/active_record_postgresql.html#json-and-jsonb)
-- [Attributes API](https://api.rubyonrails.org/classes/ActiveRecord/Attributes/ClassMethods.html#method-i-attribute)
+Currently in Rails, we can have full control over how our JSON data is stored and retrieved
+from the database, by using the [Attributes
+API](https://dev.to/swanson/automatically-cast-params-with-the-rails-attributes-api-446a) to
+serialize and deserialize our data.
 
-By combining these features, we have full control over how our JSON data is stored and
-retrieved from the database.
-
-And that's what this extension does, in order to provide a convinient way to model
-semi-structured data in a Rails application.
+That's what this extension does, in order to provide a convinient way to model semi-structured
+data in a Rails application.
 
 ## Usage
 Let's say that we need to store books in our database. We might want to "embed" data such as
